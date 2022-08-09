@@ -10,17 +10,17 @@ const {
     LOGOUT_REQUEST_FAILURE
   } = AuthenticationTypes;
 
-export const loadRequest = (data: LoginRequestPayload) => {
+export const loginRequest = (data: LoginRequestPayload) => {
   return action(LOAD_AUTHENTICATION_REQUEST, data);
 }
 
-export const loadRequestSuccess = (data: Authentication) => {
+export const loginRequestSuccess = (data: Authentication) => {
   return action(LOAD_AUTHENTICATION_REQUEST_SUCCESS, {
     data,
   });
 };
 
-export const loadRequestFailure = () => {
+export const loginRequestFailure = () => {
   return action(LOAD_AUTHENTICATION_REQUEST_FAILURE);
 };
 

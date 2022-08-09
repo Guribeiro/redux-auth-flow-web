@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
@@ -12,7 +12,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	loadRequest(data: LoginRequestPayload): void;
+	loginRequest(data: LoginRequestPayload): void;
 	logoutRequest(): void;
 }
 
@@ -20,21 +20,23 @@ interface OwnProps { }
 
 type LoginProps = StateProps & DispatchProps & OwnProps;
 
-const Login = ({loadRequest, logoutRequest, authentication, error, loading }:LoginProps): JSX.Element => {
+
+const Login = ({loginRequest, logoutRequest, authentication, error, loading }:LoginProps): JSX.Element => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
 	const handleSubmitLogin = useCallback((e:FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		loadRequest({
+
+		loginRequest({
 			username,
-			password,
+			password
 		});
 
 		setUsername('');
 		setPassword('');
 
-	},[loadRequest, username, password]);
+	},[username, password, loading]);
 
 	return (
 		<main>

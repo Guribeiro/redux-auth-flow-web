@@ -3,11 +3,13 @@ import api from '../../../services/api';
 import { LoginRequestPayload, Authentication } from './types'
 import { AxiosResponse } from 'axios';
 
-const STORAGE_AUTHENTICATION_KEY = '@test:authentication';
+export const STORAGE_AUTHENTICATION_KEY = '@test:authentication';
+
+import {rootNavigate} from '../../../routes/history';
 
 import {
-  loadRequestSuccess,
-  loadRequestFailure,
+  loginRequestSuccess,
+  loginRequestFailure,
   logoutRequestSuccess,
   logoutRequestFailure
 } from './actions';
@@ -49,13 +51,15 @@ export function* login({ payload }: Action) {
 
     localStorage.setItem(STORAGE_AUTHENTICATION_KEY, JSON.stringify({token, user}));
     
-    yield put(loadRequestSuccess({
+    yield put(loginRequestSuccess({
       token,
       user
     }));
 
+    rootNavigate('/dashboard')
+
   } catch (error) {
-    yield put(loadRequestFailure());
+    yield put(loginRequestFailure());
   }
 }
 
@@ -64,6 +68,8 @@ export function* logout() {
     localStorage.removeItem(STORAGE_AUTHENTICATION_KEY);
 
     yield put(logoutRequestSuccess());
+
+    rootNavigate('/')
   } catch (error) {
     yield put(logoutRequestFailure());
   }
