@@ -1,4 +1,4 @@
-import { Routes as Router, Route } from 'react-router-dom';
+import { Routes as Router, Route, Navigate } from 'react-router-dom';
 import {connect} from 'react-redux';
 import Login from '../screens/Login';
 import Dashboard from '../screens/Dashboard';
@@ -9,7 +9,6 @@ import * as AuthenticationActions from '../store/ducks/authentication/actions';
 
 import {ApplicationState} from '../store'
 import { bindActionCreators, Dispatch } from 'redux';
-import { useEffect } from 'react';
 
 interface StateProps {
 	authentication: Authentication;
@@ -23,14 +22,25 @@ interface OwnProps {}
 type RoutesProps = StateProps & DispatchProps & OwnProps;
 
 const Routes = ({authentication}:RoutesProps):JSX.Element => {
+	
 	return (
 		<Router>
-			<Route path='/' element={<Login />}  />
-			<Route 
-			element={<PrivateRoute authentication={authentication} />}
-			>
-				<Route path='/dashboard' element={<Dashboard />}  />
-			</Route>
+			{!authentication.token ? (
+				<Route path='/' element={<Login />}  />
+			): (
+				<Route 
+					element={
+						<PrivateRoute authentication={authentication} />
+					}
+				>
+					<Route path='/dashboard' element={<Dashboard />}  />
+				</Route>
+			)}
+			
+			<Route
+        path="*"
+        element={<Navigate to={authentication.token ? '/dashboard' : '/'} />}
+      />
 		</Router>
 	)
 }
