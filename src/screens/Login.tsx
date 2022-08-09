@@ -28,6 +28,8 @@ const Login = ({loginRequest, logoutRequest, authentication, error, loading }:Lo
 	const handleSubmitLogin = useCallback((e:FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		if(username === '' || password === '') return;
+
 		loginRequest({
 			username,
 			password
@@ -55,7 +57,7 @@ const Login = ({loginRequest, logoutRequest, authentication, error, loading }:Lo
 					</button>
 				)}
 
-				{error && String(error)}
+				{error && <p>Falha no login</p>}
 
 				{authentication.user && authentication.user.name}
 
