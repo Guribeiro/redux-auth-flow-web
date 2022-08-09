@@ -1,4 +1,4 @@
-import { createBrowserHistory } from "history";
+import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 
@@ -11,5 +11,5 @@ export interface BrowserRouterProps {
 }
 
 export const rootNavigate = (to: string) => {
-	history.push(to);
+  history.push(to);
 };

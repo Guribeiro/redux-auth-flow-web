@@ -3,98 +3,103 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as AuthenticationActions from '../store/ducks/authentication/actions';
-import { Authentication, LoginRequestPayload } from '../store/ducks/authentication/types';
+import {
+  Authentication,
+  LoginRequestPayload,
+} from '../store/ducks/authentication/types';
 
 interface StateProps {
-	authentication: Authentication;
-	loading: boolean;
-	error: boolean;
+  authentication: Authentication;
+  loading: boolean;
+  error: boolean;
 }
 
 interface DispatchProps {
-	loginRequest(data: LoginRequestPayload): void;
-	logoutRequest(): void;
+  loginRequest(data: LoginRequestPayload): void;
+  logoutRequest(): void;
 }
 
-interface OwnProps { }
+interface OwnProps {}
 
 type LoginProps = StateProps & DispatchProps & OwnProps;
 
+function Login({
+  loginRequest,
+  logoutRequest,
+  authentication,
+  error,
+  loading,
+}: LoginProps): JSX.Element {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-const Login = ({ loginRequest, logoutRequest, authentication, error, loading }: LoginProps): JSX.Element => {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+  const handleSubmitLogin = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-	const handleSubmitLogin = useCallback((e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+      if (username === '' || password === '') return;
 
-		if (username === '' || password === '') return;
+      loginRequest({
+        username,
+        password,
+      });
 
-		loginRequest({
-			username,
-			password
-		});
+      setUsername('');
+      setPassword('');
+    },
+    [username, password, loading],
+  );
 
-		setUsername('');
-		setPassword('');
+  return (
+    <main>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmitLogin}>
+        <p>
+          <label htmlFor="username" style={{ display: 'block' }}>
+            username
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+          </label>
+        </p>
+        <p>
+          <label htmlFor="password" style={{ display: 'block' }}>
+            password
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </label>
+        </p>
 
-	}, [username, password, loading]);
+        {!authentication.user && (
+          <button type="submit">{loading ? 'Loading' : 'Login'}</button>
+        )}
 
-	return (
-		<main>
-			<h1>Login</h1>
-			<form onSubmit={handleSubmitLogin}>
-				<p>
-					<label
-						htmlFor="username"
-						style={{ display: 'block' }}
-					>
-						username
-					</label>
-					<input
-						id='username'
-						type="text"
-						value={username}
-						onChange={e => setUsername(e.target.value)}
-					/>
-				</p>
-				<p>
-					<label
-						htmlFor="password"
-						style={{ display: 'block' }}
-					>
-						password
-					</label>
-					<input
-						id='password'
-						type="password"
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-					/>
-				</p>
+        {error && <p>Falha no login</p>}
+      </form>
 
-				{!authentication.user && (
-					<button type='submit'>
-						{loading ? 'Loading' : 'Login'}
-					</button>
-				)}
-
-				{error && <p>Falha no login</p>}
-			</form>
-
-			{authentication.user && <button onClick={logoutRequest}>Logout</button>}
-
-		</main>
-	)
+      {authentication.user && (
+        <button type="button" onClick={logoutRequest}>
+          Logout
+        </button>
+      )}
+    </main>
+  );
 }
 
 const mapStateToProps = ({ authentication }: ApplicationState) => ({
-	authentication: authentication.data,
-	loading: authentication.loading,
-	error: authentication.error,
-})
+  authentication: authentication.data,
+  loading: authentication.loading,
+  error: authentication.error,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-	bindActionCreators(AuthenticationActions, dispatch);
+  bindActionCreators(AuthenticationActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

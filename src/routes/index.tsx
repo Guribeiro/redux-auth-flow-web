@@ -1,54 +1,49 @@
 import { Routes as Router, Route, Navigate } from 'react-router-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import Login from '../screens/Login';
 import Dashboard from '../screens/Dashboard';
-import {Authentication} from '../store/ducks/authentication/types';
+import { Authentication } from '../store/ducks/authentication/types';
 import PrivateRoute from './PrivateRoute';
 
 import * as AuthenticationActions from '../store/ducks/authentication/actions';
 
-import {ApplicationState} from '../store'
-import { bindActionCreators, Dispatch } from 'redux';
+import { ApplicationState } from '../store';
 
 interface StateProps {
-	authentication: Authentication;
+  authentication: Authentication;
 }
 
-interface DispatchProps {
-}
+interface DispatchProps {}
 
 interface OwnProps {}
 
 type RoutesProps = StateProps & DispatchProps & OwnProps;
 
-const Routes = ({authentication}:RoutesProps):JSX.Element => {
-	
-	return (
-		<Router>
-			{!authentication.token ? (
-				<Route path='/' element={<Login />}  />
-			): (
-				<Route 
-					element={
-						<PrivateRoute authentication={authentication} />
-					}
-				>
-					<Route path='/dashboard' element={<Dashboard />}  />
-				</Route>
-			)}
-			
-			<Route
+function Routes({ authentication }: RoutesProps): JSX.Element {
+  return (
+    <Router>
+      {!authentication.token ? (
+        <Route path="/" element={<Login />} />
+      ) : (
+        <Route element={<PrivateRoute authentication={authentication} />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+      )}
+
+      <Route
         path="*"
         element={<Navigate to={authentication.token ? '/dashboard' : '/'} />}
       />
-		</Router>
-	)
+    </Router>
+  );
 }
 
-const mapStateToProps = ({authentication}:ApplicationState) => ({
-	authentication: authentication.data
-})
+const mapStateToProps = ({ authentication }: ApplicationState) => ({
+  authentication: authentication.data,
+});
 
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(AuthenticationActions, dispatch)
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(AuthenticationActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Routes)
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);
