@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import {Authentication} from '../store/ducks/authentication/types';
 
@@ -7,14 +7,10 @@ interface PrivateRouteProps {
 }
 
 function PrivateRoute({authentication}:PrivateRouteProps): JSX.Element {
- 
-  const { state } = useLocation();
 
-  if (!authentication.token) {
-    return <Navigate to="/" state={state} replace />;
-  }
-
-  return <Outlet />;
+  const location = useLocation();
+    
+  return authentication.token ? <Outlet /> : <Navigate to="/" state={{from: location}} replace />
 }
 
 export default PrivateRoute;
