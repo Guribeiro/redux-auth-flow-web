@@ -3,6 +3,8 @@ import createSagaMiddleware from 'redux-saga';
 import { RepositoriesState } from './ducks/repositories/types';
 import { AuthenticationState } from './ducks/authentication/types';
 
+import preloadedAuthenticationState from './ducks/authentication/preloadedAuthenticationState';
+
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
 
@@ -18,6 +20,9 @@ const store: Store<ApplicationState> = configureStore({
   middleware(getDefaultMiddleware) {
     return getDefaultMiddleware().concat(sagaMiddleware);
   },
+  preloadedState: {
+    authentication: preloadedAuthenticationState(), 
+  }
 });
 
 sagaMiddleware.run(rootSaga);
