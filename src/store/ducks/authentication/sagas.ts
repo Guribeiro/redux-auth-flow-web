@@ -1,18 +1,18 @@
 import { call, put } from 'redux-saga/effects';
-import api from '../../../services/api';
-import { LoginRequestPayload, Authentication } from './types'
 import { AxiosResponse } from 'axios';
+import api from '../../../services/api';
+import { LoginRequestPayload, Authentication } from './types';
 
-export const STORAGE_AUTHENTICATION_KEY = '@test:authentication';
-
-import {rootNavigate} from '../../../routes/history';
+import { rootNavigate } from '../../../routes/history';
 
 import {
   loginRequestSuccess,
   loginRequestFailure,
   logoutRequestSuccess,
-  logoutRequestFailure
+  logoutRequestFailure,
 } from './actions';
+
+export const STORAGE_AUTHENTICATION_KEY = '@test:authentication';
 
 interface ApiRequestAuthenticationProps {
   username: string;
@@ -47,17 +47,21 @@ export function* login({ payload }: Action) {
       { username, password },
     );
 
-    const {token, user} = response.data.data;
+    const { token, user } = response.data.data;
 
-    localStorage.setItem(STORAGE_AUTHENTICATION_KEY, JSON.stringify({token, user}));
-    
-    yield put(loginRequestSuccess({
-      token,
-      user
-    }));
+    localStorage.setItem(
+      STORAGE_AUTHENTICATION_KEY,
+      JSON.stringify({ token, user }),
+    );
 
-    rootNavigate('/dashboard')
+    yield put(
+      loginRequestSuccess({
+        token,
+        user,
+      }),
+    );
 
+    rootNavigate('/dashboard');
   } catch (error) {
     yield put(loginRequestFailure());
   }
@@ -69,7 +73,7 @@ export function* logout() {
 
     yield put(logoutRequestSuccess());
 
-    rootNavigate('/')
+    rootNavigate('/');
   } catch (error) {
     yield put(logoutRequestFailure());
   }

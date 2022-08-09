@@ -1,11 +1,12 @@
-import { useLayoutEffect, useState } from "react";
-import { BrowserRouterProps, Router } from "react-router-dom";
-import { BrowserHistory } from "history";
-import customHistory from "./history";
+import { useLayoutEffect, useState } from 'react';
+import { BrowserRouterProps, Router } from 'react-router-dom';
+import { BrowserHistory } from 'history';
+import customHistory from './history';
+
 interface Props extends BrowserRouterProps {
   history: BrowserHistory;
 }
-export const CustomRouter = ({ basename, history, children }: Props) => {
+export function CustomRouter({ basename, history, children }: Props) {
   const [state, setState] = useState({
     action: history.action,
     location: history.location,
@@ -20,4 +21,4 @@ export const CustomRouter = ({ basename, history, children }: Props) => {
       basename={basename}
     />
   );
-}; 
+}

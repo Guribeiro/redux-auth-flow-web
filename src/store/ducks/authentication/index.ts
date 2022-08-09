@@ -3,17 +3,17 @@ import {
   AuthenticationState,
   AuthenticationAction,
   Authentication,
-  AuthenticationTypes
+  AuthenticationTypes,
 } from './types';
 
 const {
-    LOAD_AUTHENTICATION_REQUEST, 
-    LOAD_AUTHENTICATION_REQUEST_FAILURE, 
-    LOAD_AUTHENTICATION_REQUEST_SUCCESS, 
-    LOGOUT_REQUEST, 
-    LOGOUT_REQUEST_FAILURE, 
-    LOGOUT_REQUEST_SUCCESS
-  } = AuthenticationTypes;
+  LOAD_AUTHENTICATION_REQUEST,
+  LOAD_AUTHENTICATION_REQUEST_FAILURE,
+  LOAD_AUTHENTICATION_REQUEST_SUCCESS,
+  LOGOUT_REQUEST,
+  LOGOUT_REQUEST_FAILURE,
+  LOGOUT_REQUEST_SUCCESS,
+} = AuthenticationTypes;
 
 const INITIAL_STATE: AuthenticationState = {
   data: {} as Authentication,
@@ -27,7 +27,7 @@ const reducer: Reducer<AuthenticationState, AuthenticationAction> = (
 ) => {
   switch (action.type) {
     case LOAD_AUTHENTICATION_REQUEST:
-      return { ...state, loading: true }; 
+      return { ...state, loading: true };
     case LOAD_AUTHENTICATION_REQUEST_SUCCESS:
       return {
         ...state,
@@ -36,13 +36,13 @@ const reducer: Reducer<AuthenticationState, AuthenticationAction> = (
         data: action.payload.data,
       };
     case LOAD_AUTHENTICATION_REQUEST_FAILURE:
-      return { loading: false, error: true, data: {} as Authentication};
+      return { loading: false, error: true, data: {} as Authentication };
     case LOGOUT_REQUEST:
-      return {...state, loading: true, error: false}
+      return { ...state, loading: true, error: false };
     case LOGOUT_REQUEST_FAILURE:
-      return {...state, loading: false, error: true}
+      return { ...state, loading: false, error: true };
     case LOGOUT_REQUEST_SUCCESS:
-      return {loading: false, error: false, data: {} as Authentication}
+      return { loading: false, error: false, data: {} as Authentication };
     default:
       return state;
   }

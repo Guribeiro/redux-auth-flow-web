@@ -6,6 +6,6 @@ import { login, logout } from './authentication/sagas';
 export default function* rootSaga() {
   yield all([
     takeLatest(AuthenticationTypes.LOAD_AUTHENTICATION_REQUEST, login),
-    takeLatest(AuthenticationTypes.LOGOUT_REQUEST, logout)
+    takeLatest(AuthenticationTypes.LOGOUT_REQUEST, logout),
   ]);
 }
