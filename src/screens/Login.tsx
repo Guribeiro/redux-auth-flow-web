@@ -21,14 +21,14 @@ interface OwnProps { }
 type LoginProps = StateProps & DispatchProps & OwnProps;
 
 
-const Login = ({loginRequest, logoutRequest, authentication, error, loading }:LoginProps): JSX.Element => {
+const Login = ({ loginRequest, logoutRequest, authentication, error, loading }: LoginProps): JSX.Element => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleSubmitLogin = useCallback((e:FormEvent<HTMLFormElement>) => {
+	const handleSubmitLogin = useCallback((e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		if(username === '' || password === '') return;
+		if (username === '' || password === '') return;
 
 		loginRequest({
 			username,
@@ -38,29 +38,48 @@ const Login = ({loginRequest, logoutRequest, authentication, error, loading }:Lo
 		setUsername('');
 		setPassword('');
 
-	},[username, password, loading]);
+	}, [username, password, loading]);
 
 	return (
 		<main>
+			<h1>Login</h1>
 			<form onSubmit={handleSubmitLogin}>
-				<h1>Login</h1>
-				<label htmlFor="">username</label>
-				<input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-				<br />
-				<label htmlFor="">password</label>
-				<input type="text" value={password} onChange={e => setPassword(e.target.value)} />
-				<br />
-		
+				<p>
+					<label
+						htmlFor="username"
+						style={{ display: 'block' }}
+					>
+						username
+					</label>
+					<input
+						id='username'
+						type="text"
+						value={username}
+						onChange={e => setUsername(e.target.value)}
+					/>
+				</p>
+				<p>
+					<label
+						htmlFor="password"
+						style={{ display: 'block' }}
+					>
+						password
+					</label>
+					<input
+						id='password'
+						type="password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+					/>
+				</p>
+
 				{!authentication.user && (
 					<button type='submit'>
-						{loading ? 'Carregando' : 'Login'}
+						{loading ? 'Loading' : 'Login'}
 					</button>
 				)}
 
 				{error && <p>Falha no login</p>}
-
-				{authentication.user && authentication.user.name}
-
 			</form>
 
 			{authentication.user && <button onClick={logoutRequest}>Logout</button>}
@@ -69,7 +88,7 @@ const Login = ({loginRequest, logoutRequest, authentication, error, loading }:Lo
 	)
 }
 
-const mapStateToProps = ({authentication}:ApplicationState) => ({
+const mapStateToProps = ({ authentication }: ApplicationState) => ({
 	authentication: authentication.data,
 	loading: authentication.loading,
 	error: authentication.error,
