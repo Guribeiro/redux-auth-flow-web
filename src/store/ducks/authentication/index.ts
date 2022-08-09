@@ -30,12 +30,13 @@ const reducer: Reducer<AuthenticationState, AuthenticationAction> = (
       return { ...state, loading: true }; 
     case LOAD_AUTHENTICATION_REQUEST_SUCCESS:
       return {
+        ...state,
         loading: false,
         error: false,
         data: action.payload.data,
       };
     case LOAD_AUTHENTICATION_REQUEST_FAILURE:
-      return { ...state, loading: false, error: true };
+      return { ...state, loading: false, error: true, data: action.payload.data };
     case LOGOUT_REQUEST:
       return {...state, loading: true, error: false}
     case LOGOUT_REQUEST_FAILURE:
