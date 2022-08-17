@@ -24,6 +24,7 @@
     "prettier"
   ],
   "rules": {
+    "default-param-last":"off",
     "jsx-a11y/label-has-for": "off",
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "error",

@@ -1,11 +1,12 @@
 import { Routes as Router, Route, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import Login from '../screens/Login';
-import Dashboard from '../screens/Dashboard';
-import { Authentication } from '../store/ducks/authentication/types';
-import PrivateRoute from './PrivateRoute';
 
+import Login from '../screens/Login';
+import PrivateRoute from './PrivateRoute';
+import Dashboard from '../screens/Dashboard';
+
+import { Authentication } from '../store/ducks/authentication/types';
 import * as AuthenticationActions from '../store/ducks/authentication/actions';
 
 import { ApplicationState } from '../store';
