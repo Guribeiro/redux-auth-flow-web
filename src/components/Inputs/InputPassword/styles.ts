@@ -8,11 +8,20 @@ export const Container = styled.section`
       font-size: 1.4rem;
       font-weight: 400;
       color: ${({ theme }) => theme.colors.text_primary};
+
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      strong {
+        color: #983628;
+        font-weight: 700;
+        font-size: 1rem;
+      }
     }
 
     div {
-      border: 1px solid red;
-
       display: flex;
       align-items: center;
 

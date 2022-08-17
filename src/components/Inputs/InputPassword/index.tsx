@@ -21,7 +21,11 @@ function InputPassword({
   return (
     <Container>
       <label htmlFor={name}>
-        <span>{label}</span>
+        <span>
+          {label}
+          {error && <strong>{error}</strong>}
+        </span>
+
         <div>
           <input
             id={name}

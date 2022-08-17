@@ -18,7 +18,10 @@ function Input({
   return (
     <Container>
       <label htmlFor={name}>
-        <span>{label}</span>
+        <span>
+          {label}
+          {error && <strong>{error}</strong>}
+        </span>
         <input id={name} {...props} />
       </label>
     </Container>

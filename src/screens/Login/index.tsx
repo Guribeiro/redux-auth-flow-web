@@ -1,7 +1,11 @@
-import { FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import DarkModeToggle from 'react-dark-mode-toggle';
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { ApplicationState } from '../../store';
 import * as AuthenticationActions from '../../store/ducks/authentication/actions';
 import * as ThemeActions from '../../store/ducks/theme/actions';
@@ -31,6 +35,21 @@ interface DispatchProps {
 
 type LoginProps = StateProps & DispatchProps;
 
+interface FormData {
+  username: string;
+  password: string;
+}
+
+const defaultValues: FormData = {
+  username: '',
+  password: '',
+};
+
+const schema = yup.object().shape({
+  username: yup.string().min(5, 'username must contain at least 05 caracteres'),
+  password: yup.string().required('password is a required field'),
+});
+
 function Login({
   loginRequest,
   logoutRequest,
@@ -38,24 +57,19 @@ function Login({
   authentication,
   theme,
 }: LoginProps): JSX.Element {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const { control, handleSubmit } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues,
+  });
 
-  const handleSubmitLogin = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      if (username === '' || password === '') return;
-
+  const onSubmit = useCallback(
+    ({ username, password }: FormData) => {
       loginRequest({
         username,
         password,
       });
-
-      setUsername('');
-      setPassword('');
     },
-    [username, password],
+    [loginRequest],
   );
 
   return (
@@ -80,12 +94,42 @@ function Login({
       </div>
 
       <section>
-        <form onSubmit={handleSubmitLogin}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset>
-            <InputText label="username" name="username" />
+            <Controller
+              name="username"
+              control={control}
+              render={({
+                field: { value, onChange, name },
+                fieldState: { error },
+              }) => (
+                <InputText
+                  label="username"
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  error={error?.message}
+                />
+              )}
+            />
           </fieldset>
           <fieldset>
-            <InputPassword label="password" name="password" />
+            <Controller
+              name="password"
+              control={control}
+              render={({
+                field: { value, onChange, name },
+                fieldState: { error },
+              }) => (
+                <InputPassword
+                  label="password"
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  error={error?.message}
+                />
+              )}
+            />
           </fieldset>
 
           <Button type="submit">
