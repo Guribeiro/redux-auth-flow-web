@@ -30,12 +30,12 @@ Before starting, you need to have [Git](https://git-scm.com) and [Node](https://
 
 Clone this project
 ```bash
-git clone https://github.com/guribeiro/redux-auth-flow
+git clone git@github.com:Guribeiro/redux-auth-flow-web.git
 ```
 
 ## Access
 ```base
-cd redux-auth-flow
+cd redux-auth-flow-web
 ```
 
 ## Install dependencies
