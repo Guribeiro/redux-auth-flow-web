@@ -56,7 +56,6 @@ const schema = yup.object().shape({
 
 function Signin({
   loginRequest,
-  logoutRequest,
   switchThemeByTitle,
   authentication,
   theme,

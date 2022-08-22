@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
+import { FiPower } from 'react-icons/fi';
+
 import { useMemo } from 'react';
 import { ApplicationState } from '../../store';
 import * as AuthenticationActions from '../../store/ducks/authentication/actions';
@@ -64,7 +66,7 @@ function Dashboard({
       <section>
         {authentication.data.user && (
           <Button type="button" onClick={logoutRequest}>
-            Logout
+            <FiPower />
           </Button>
         )}
       </section>
