@@ -7,6 +7,9 @@ import {
 } from './types';
 
 const {
+  SIGNUP_REQUEST,
+  SIGNUP_REQUEST_FAILURE,
+  SIGNUP_REQUEST_SUCCESS,
   LOAD_AUTHENTICATION_REQUEST,
   LOAD_AUTHENTICATION_REQUEST_FAILURE,
   LOAD_AUTHENTICATION_REQUEST_SUCCESS,
@@ -26,6 +29,12 @@ const reducer: Reducer<AuthenticationState, AuthenticationAction> = (
   action,
 ) => {
   switch (action.type) {
+    case SIGNUP_REQUEST:
+      return { ...state, loading: true };
+    case SIGNUP_REQUEST_SUCCESS:
+      return { ...state, loading: false, error: false };
+    case SIGNUP_REQUEST_FAILURE:
+      return { ...state, loading: false, error: true };
     case LOAD_AUTHENTICATION_REQUEST:
       return { ...state, loading: true };
     case LOAD_AUTHENTICATION_REQUEST_SUCCESS:

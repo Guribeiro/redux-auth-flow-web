@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
+import { useMemo } from 'react';
 import { ApplicationState } from '../../store';
 import * as AuthenticationActions from '../../store/ducks/authentication/actions';
 import * as ThemeActions from '../../store/ducks/theme/actions';
@@ -35,6 +36,12 @@ function Dashboard({
   logoutRequest,
   switchThemeByTitle,
 }: DashboardProps): JSX.Element {
+  const userFistName = useMemo(() => {
+    const [firstName] = authentication.data.user.name.split(' ');
+
+    return firstName;
+  }, [authentication.data.user.name]);
+
   return (
     <Main>
       <header>
@@ -51,7 +58,7 @@ function Dashboard({
       </header>
 
       <div>
-        <h1>Bem-vindo(a), {authentication.data.user.name}</h1>
+        <h1>Welcome, {userFistName}</h1>
       </div>
 
       <section>

@@ -1,12 +1,13 @@
 ## 🎯 About ##
 
-authentication flow with redux-toolkit, saga and typescript 
+authentication flow with redux-toolkit, saga and typescript
 
 ## ✨ Features ##
 
-✔️ Login;\
-✔️ preloadedState;\
-✔️ Saga;
+✔️ Signup;\
+✔️ Signin;\
+✔️ Persistent Data;\
+✔️ Switch Theme;
 
 ## 🚀 Technologies ##
 
@@ -15,9 +16,11 @@ The following tools were used in this project:
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Axios](https://axios-http.com/ptbr/docs/intro)
 - [Redux-Toolkit](https://redux-toolkit.js.org/)
 - [Redux-Saga](https://redux-saga.js.org/)
 - [React-Router-Dom](https://reactrouter.com/docs/en/v6/getting-started/overview)
+- [React Toastify](https://fkhadra.github.io/react-toastify/introduction/)
 
 ## ☑️ Requirements ##
 

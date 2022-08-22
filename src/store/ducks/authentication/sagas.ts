@@ -1,11 +1,18 @@
 import { call, put } from 'redux-saga/effects';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 import api from '../../../services/api';
-import { LoginRequestPayload, Authentication } from './types';
+import {
+  LoginRequestPayload,
+  Authentication,
+  SignupRequestPayload,
+} from './types';
 
 import { rootNavigate } from '../../../routes/history';
 
 import {
+  signupRequestSuccess,
+  signupRequestFailure,
   loginRequestSuccess,
   loginRequestFailure,
   logoutRequestSuccess,
@@ -23,8 +30,26 @@ function apiRequestAuthentication({
   username,
   password,
 }: ApiRequestAuthenticationProps) {
-  return api.post(`/users/authenticate`, {
-    email: username,
+  return api.post(`/signin`, {
+    username,
+    password,
+  });
+}
+
+interface ApiPostRequestSignupProps {
+  name: string;
+  username: string;
+  password: string;
+}
+
+function apiPostRequestSignup({
+  name,
+  username,
+  password,
+}: ApiPostRequestSignupProps) {
+  return api.post('/users', {
+    name,
+    username,
     password,
   });
 }
@@ -34,20 +59,41 @@ interface Action {
   payload: LoginRequestPayload;
 }
 
-interface LoginResponse {
-  data: Authentication;
+interface SignupAction {
+  type: string;
+  payload: SignupRequestPayload;
+}
+
+export function* signup({ payload }: SignupAction) {
+  try {
+    const { name, username, password } = payload;
+    yield call(apiPostRequestSignup, { name, username, password });
+    yield put(signupRequestSuccess());
+    rootNavigate('/');
+    toast('Account created successfully', {
+      type: 'success',
+    });
+  } catch (error) {
+    const axiosError = error as AxiosError<{ error: string }>;
+    yield put(loginRequestFailure());
+    toast(axiosError.response?.data.error, {
+      type: 'error',
+    });
+
+    yield put(signupRequestFailure());
+  }
 }
 
 export function* login({ payload }: Action) {
   try {
     const { username, password } = payload;
 
-    const response: AxiosResponse<LoginResponse> = yield call(
+    const response: AxiosResponse<Authentication> = yield call(
       apiRequestAuthentication,
       { username, password },
     );
 
-    const { token, user } = response.data.data;
+    const { token, user } = response.data;
 
     localStorage.setItem(
       STORAGE_AUTHENTICATION_KEY,
@@ -62,8 +108,15 @@ export function* login({ payload }: Action) {
     );
 
     rootNavigate('/dashboard');
+    toast(`Welcome back, ${user.name}`, {
+      type: 'success',
+    });
   } catch (error) {
+    const axiosError = error as AxiosError<{ error: string }>;
     yield put(loginRequestFailure());
+    toast(axiosError.response?.data.error, {
+      type: 'error',
+    });
   }
 }
 
@@ -76,5 +129,10 @@ export function* logout() {
     rootNavigate('/');
   } catch (error) {
     yield put(logoutRequestFailure());
+    const axiosError = error as AxiosError<{ error: string }>;
+    yield put(loginRequestFailure());
+    toast(axiosError.response?.data.error, {
+      type: 'error',
+    });
   }
 }

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { lighten } from 'polished';
 
 export const Main = styled.main`
   width: 100%;
@@ -27,16 +28,20 @@ export const Main = styled.main`
     h1 {
       text-align: center;
       font-size: 4.2rem;
-
       margin-bottom: 3rem;
-
       color: ${({ theme }) => theme.colors.text_primary};
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 3rem;
+      color: ${({ theme }) => theme.colors.primary};
     }
 
     p {
       text-align: center;
       font-size: 1.4rem;
-
       color: ${({ theme }) => theme.colors.text_primary};
     }
   }
@@ -52,6 +57,25 @@ export const Main = styled.main`
         border: none;
 
         margin-bottom: 1.6rem;
+      }
+
+      footer {
+        margin-top: 3rem;
+
+        align-items: center;
+        display: flex;
+        justify-content: center;
+
+        a {
+          text-align: center;
+          font-weight: 500;
+
+          color: ${({ theme }) => theme.colors.primary};
+
+          &:hover {
+            color: ${({ theme }) => lighten(0.1, theme.colors.primary)};
+          }
+        }
       }
     }
   }
