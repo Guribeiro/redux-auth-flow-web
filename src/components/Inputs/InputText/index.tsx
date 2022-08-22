@@ -1,6 +1,6 @@
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, useCallback, useState } from 'react';
 
-import { Container } from './styles';
+import { Container, InputContainer } from './styles';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -15,14 +15,31 @@ function Input({
   error,
   ...props
 }: InputProps): JSX.Element {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleInputFocus = useCallback(() => {
+    setIsFocused(true);
+  }, []);
+
+  const handleInputBlur = useCallback(() => {
+    setIsFocused(false);
+  }, []);
+
   return (
-    <Container>
+    <Container focus={isFocused}>
       <label htmlFor={name}>
-        <span>
-          {label}
+        <div>
+          <span>{label}</span>
           {error && <strong>{error}</strong>}
-        </span>
-        <input id={name} {...props} />
+        </div>
+        <InputContainer focus={isFocused}>
+          <input
+            id={name}
+            {...props}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+          />
+        </InputContainer>
       </label>
     </Container>
   );

@@ -20,7 +20,7 @@ export const Main = styled.main`
     justify-content: end;
   }
 
-  div {
+  > div {
     margin: 0 auto;
     max-width: 460px;
     padding: 1.6rem;

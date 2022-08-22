@@ -1,18 +1,35 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.section`
+interface InputContainerProps {
+  focus: boolean;
+}
+
+interface ContainerProps {
+  focus: boolean;
+}
+
+export const Container = styled.section<ContainerProps>`
   label {
-    span {
-      display: inline-block;
-      margin-bottom: 0.5rem;
-      font-size: 1.4rem;
-      font-weight: 400;
-      color: ${({ theme }) => theme.colors.text_primary};
-
+    div {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+
+      span {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        font-size: 1.4rem;
+        font-weight: 400;
+
+        color: ${({ theme }) => theme.colors.text_primary};
+
+        ${({ focus, theme }) =>
+          focus &&
+          css`
+            color: ${theme.colors.primary};
+          `}
+      }
 
       strong {
         color: #983628;
@@ -20,39 +37,45 @@ export const Container = styled.section`
         font-size: 1rem;
       }
     }
+  }
+`;
 
-    div {
-      display: flex;
-      align-items: center;
+export const InputContainer = styled.div<InputContainerProps>`
+  display: flex;
+  align-items: center;
 
-      width: 100%;
-      line-height: 2.5rem;
-      padding: 0.8rem;
+  padding: 1.2rem;
+  width: 100%;
+  font-size: 1.6rem;
+  border-radius: 0.6rem;
+  border: none;
+  background-color: #fff;
+
+  border: 2px solid ${({ theme }) => theme.colors.background};
+
+  ${({ theme, focus }) =>
+    focus &&
+    css`
+      border: 2px solid ${theme.colors.primary};
+    `}
+
+  input {
+    width: 100%;
+    border: none;
+    font-size: 1.6rem;
+    color: #151417;
+  }
+
+  button {
+    margin: none;
+    padding: none;
+
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+    svg {
       font-size: 1.6rem;
-      border-radius: 0.6rem;
-      border: none;
-      background-color: #fff;
-
-      input {
-        width: 100%;
-        border: none;
-        font-size: 1.6rem;
-        line-height: 2.5rem;
-        color: #151417;
-      }
-
-      button {
-        margin: none;
-        padding: none;
-
-        align-items: center;
-        justify-content: center;
-        display: flex;
-
-        svg {
-          font-size: 1.6rem;
-        }
-      }
     }
   }
 `;
