@@ -142,7 +142,7 @@ function Signin({
           </Button>
 
           <footer>
-            <Link to="/signup">Already have an account?</Link>
+            <Link to="/signup">Don&apos;t have an account?</Link>
           </footer>
         </form>
       </section>
