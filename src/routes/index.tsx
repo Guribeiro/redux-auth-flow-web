@@ -2,8 +2,8 @@ import { Routes as Router, Route, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import Login from '../screens/Signup';
-import Signup from '../screens/Signin';
+import Signup from '../screens/Signup';
+import Signin from '../screens/Signin';
 import PrivateRoute from './PrivateRoute';
 import Dashboard from '../screens/Dashboard';
 
@@ -28,8 +28,8 @@ function Routes({ authentication }: RoutesProps): JSX.Element {
     <Router>
       {!token ? (
         <>
-          <Route path="/" element={<Signup />} />
-          <Route path="/signin" element={<Login />} />
+          <Route path="/" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
         </>
       ) : (
         <Route element={<PrivateRoute authentication={authentication} />}>
