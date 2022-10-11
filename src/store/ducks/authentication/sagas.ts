@@ -20,6 +20,7 @@ import {
 } from './actions';
 
 export const STORAGE_AUTHENTICATION_KEY = '@test:authentication';
+export const STORAGE_REMEMBER_SIGNIN = '@test:signin-remember';
 
 interface ApiRequestAuthenticationProps {
   username: string;
@@ -86,7 +87,7 @@ export function* signup({ payload }: SignupAction) {
 
 export function* login({ payload }: Action) {
   try {
-    const { username, password } = payload;
+    const { username, password, remember } = payload;
 
     const response: AxiosResponse<Authentication> = yield call(
       apiRequestAuthentication,
@@ -99,6 +100,12 @@ export function* login({ payload }: Action) {
       STORAGE_AUTHENTICATION_KEY,
       JSON.stringify({ token, user }),
     );
+
+    if (remember !== 'true') {
+      localStorage.removeItem(STORAGE_REMEMBER_SIGNIN);
+    } else {
+      localStorage.setItem(STORAGE_REMEMBER_SIGNIN, username);
+    }
 
     yield put(
       loginRequestSuccess({

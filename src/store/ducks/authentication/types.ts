@@ -19,6 +19,7 @@ export interface SignupRequestPayload {
 export interface LoginRequestPayload {
   username: string;
   password: string;
+  remember: string;
 }
 
 export interface User {

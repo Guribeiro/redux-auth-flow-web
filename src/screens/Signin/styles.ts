@@ -8,12 +8,8 @@ export const Main = styled.main`
   margin: 0 auto;
 
   header {
-    margin: 0 auto;
+    margin: 3rem auto;
     max-width: 460px;
-
-    height: 5rem;
-
-    padding: 5rem 1.6rem;
 
     display: flex;
     align-items: center;

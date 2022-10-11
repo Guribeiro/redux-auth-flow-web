@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import DarkModeToggle from 'react-dark-mode-toggle';
@@ -16,10 +16,12 @@ import {
 } from '../../store/ducks/authentication/types';
 
 import { SwitchThemePayload, ThemeState } from '../../store/ducks/theme/types';
+import { STORAGE_REMEMBER_SIGNIN } from '../../store/ducks/authentication/sagas';
 
 import Button from '../../components/Button';
 import InputText from '../../components/Inputs/InputText';
 import InputPassword from '../../components/Inputs/InputPassword';
+import Checkbox from '../../components/Inputs/Checkbox';
 
 import { Main } from './styles';
 
@@ -39,19 +41,19 @@ type SigninProps = StateProps & DispatchProps;
 interface FormData {
   username: string;
   password: string;
-  remember: boolean;
+  remember: string;
 }
 
 const defaultValues: FormData = {
   username: '',
   password: '',
-  remember: false,
+  remember: '',
 };
 
 const schema = yup.object().shape({
   username: yup.string().min(5, 'username must contain at least 05 caracteres'),
   password: yup.string().required('password is a required field'),
-  remember: yup.boolean(),
+  remember: yup.string(),
 });
 
 function Signin({
@@ -60,20 +62,33 @@ function Signin({
   authentication,
   theme,
 }: SigninProps): JSX.Element {
-  const { control, handleSubmit } = useForm<FormData>({
+  const { control, handleSubmit, setValue } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues,
   });
 
   const onSubmit = useCallback(
-    ({ username, password }: FormData) => {
+    ({ username, password, remember }: FormData) => {
+      console.log({ remember });
       loginRequest({
         username,
         password,
+        remember,
       });
     },
     [loginRequest],
   );
+
+  useEffect(() => {
+    const loadStoragedRememberSignin = () => {
+      const username = localStorage.getItem(STORAGE_REMEMBER_SIGNIN);
+
+      if (username) {
+        setValue('username', username);
+      }
+    };
+    loadStoragedRememberSignin();
+  }, []);
 
   return (
     <Main>
@@ -85,7 +100,6 @@ function Signin({
             })
           }
           checked={theme.data.title === 'dark'}
-          size={80}
           speed={5}
         />
       </header>
@@ -128,6 +142,24 @@ function Signin({
               }) => (
                 <InputPassword
                   label="password"
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  error={error?.message}
+                />
+              )}
+            />
+          </fieldset>
+          <fieldset>
+            <Controller
+              name="remember"
+              control={control}
+              render={({
+                field: { value, onChange, name },
+                fieldState: { error },
+              }) => (
+                <Checkbox
+                  label="remember"
                   name={name}
                   value={value}
                   onChange={onChange}
